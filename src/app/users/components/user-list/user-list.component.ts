@@ -13,9 +13,9 @@ import { UserArrayService, UserObservableService } from './../../services';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users$: Observable<Array<UserModel>>;
+  users$!: Observable<Array<UserModel>>;
 
-  private editedUser: UserModel;
+  private editedUser!: UserModel;
 
   constructor(
     private userArrayService: UserArrayService,
@@ -40,13 +40,13 @@ export class UserListComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) =>
-          this.userArrayService.getUser(+params.get('editedUserID'))
+          this.userArrayService.getUser(params.get('editedUserID')!)
         )
       )
       .subscribe(observer);
   }
 
-  onEditUser(user: UserModel) {
+  onEditUser(user: UserModel): void {
     const link = ['/users/edit', user.id];
     this.router.navigate(link);
     // or
@@ -59,5 +59,9 @@ export class UserListComponent implements OnInit {
       return user.id === this.editedUser.id;
     }
     return false;
+  }
+
+  trackByFn(index: number, user: UserModel): number | null {
+    return user.id;
   }
 }

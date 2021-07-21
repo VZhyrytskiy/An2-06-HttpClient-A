@@ -47,12 +47,11 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return this.checkLogin(url);
   }
 
-  canLoad(route: Route, segments: UrlSegment[]
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean | UrlTree {
     console.log('CanLoad Guard is activated');
     const url = `/${route.path}`;
 
-    return this.checkLogin(url) as boolean;
+    return this.checkLogin(url);
   }
 
   private checkLogin(url: string): boolean | UrlTree {
