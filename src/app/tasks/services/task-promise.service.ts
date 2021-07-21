@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { TaskModel } from './../models/task.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'any'
@@ -12,9 +13,8 @@ export class TaskPromiseService {
   constructor(private http: HttpClient) {}
 
   getTasks(): Promise<TaskModel[]> {
-    return this.http
-      .get(this.tasksUrl)
-      .toPromise()
+    const request$ = this.http.get(this.tasksUrl);
+    return firstValueFrom(request$)
       .then(response => response as TaskModel[])
       .catch(this.handleError);
   }
