@@ -34,10 +34,9 @@ export class TaskPromiseService {
     const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
+    const request$ = this.http.put(url, body, options);
 
-    return this.http
-      .put(url, body, options)
-      .toPromise()
+    return firstValueFrom(request$)
       .then(response => response as TaskModel)
       .catch(this.handleError);
   }
