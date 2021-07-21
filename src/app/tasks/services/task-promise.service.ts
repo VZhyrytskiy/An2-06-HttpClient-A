@@ -56,15 +56,12 @@ export class TaskPromiseService {
 
   deleteTask(task: TaskModel): Promise<TaskModel> {
     const url = `${this.tasksUrl}/${task.id}`;
+    const request$ = this.http.delete(url);
 
-    return (
-      this.http
-        .delete(url)
-        .toPromise()
+    return firstValueFrom(request$)
         // json-server return empty object
         // so we don't use .then(...)
-        .catch(this.handleError)
-    );
+        .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
