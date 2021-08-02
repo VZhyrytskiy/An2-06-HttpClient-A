@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 // rxjs
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { UserModel } from './../../models/user.model';
@@ -13,9 +13,9 @@ import { UserObservableService } from './../../services';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users$: Observable<Array<UserModel>>;
+  users$!: Observable<Array<UserModel>>;
 
-  private editedUser: UserModel;
+  private editedUser!: UserModel;
 
   constructor(
     private userObservableService: UserObservableService,
@@ -39,15 +39,15 @@ export class UserListComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) => {
-          return params.get('editedUserID')
-            ? this.userObservableService.getUser(+params.get('editedUserID'))
-            : of(null);
+          return params.has('editedUserID')
+            ? this.userObservableService.getUser(params.get('editedUserID')!)
+            : EMPTY;
         })
       )
       .subscribe(observer);
   }
 
-  onEditUser(user: UserModel) {
+  onEditUser(user: UserModel): void {
     const link = ['/users/edit', user.id];
     this.router.navigate(link);
     // or
@@ -60,5 +60,9 @@ export class UserListComponent implements OnInit {
       return user.id === this.editedUser.id;
     }
     return false;
+  }
+
+  trackByFn(index: number, user: UserModel): number | null {
+    return user.id;
   }
 }
