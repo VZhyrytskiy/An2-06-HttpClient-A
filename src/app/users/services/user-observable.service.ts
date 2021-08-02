@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, publish, refCount, share } from 'rxjs/operators';
+import { catchError, retry, share } from 'rxjs/operators';
 
 import { UserModel } from './../models/user.model';
 import { UsersAPI } from './../users.config';
@@ -24,8 +24,7 @@ export class UserObservableService {
   getUsers(): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(this.usersUrl).pipe(
       retry(3),
-      publish(),
-      refCount(),
+      share(),
       catchError(this.handleError)
     );
   }
@@ -58,6 +57,6 @@ export class UserObservableService {
       );
     }
 
-    return throwError('Something bad happened; please try again later.');
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 }
