@@ -29,12 +29,12 @@ export class UserObservableService {
     );
   }
 
-  getUser(id: number): Observable<UserModel> {
+  getUser(id: number | string): Observable<UserModel> {
     const url = `${this.usersUrl}/${id}`;
 
     return this.http.get<UserModel>(url).pipe(
       retry(3),
-      share(), // = publish() + refCount()
+      share(), 
       catchError(this.handleError)
     );
   }

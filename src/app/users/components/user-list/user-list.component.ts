@@ -40,7 +40,7 @@ export class UserListComponent implements OnInit {
       .pipe(
         switchMap((params: ParamMap) => {
           return params.has('editedUserID')
-            ? this.userObservableService.getUser(+params.get('editedUserID')!)
+            ? this.userObservableService.getUser(params.get('editedUserID')!)
             : EMPTY;
         })
       )
