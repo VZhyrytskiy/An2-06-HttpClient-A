@@ -29,7 +29,7 @@ export class UserObservableService {
     );
   }
 
-  getUser(id: number) {}
+  getUser(id: number | string) {}
 
   updateUser(user: UserModel) {}
 
