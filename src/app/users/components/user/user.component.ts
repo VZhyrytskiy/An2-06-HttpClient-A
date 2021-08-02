@@ -18,7 +18,7 @@ export class UserComponent {
     this.editUser.emit(this.user);
   }
 
-  onDeleteUser() {
+  onDeleteUser(): void {
     this.deleteUser.emit(this.user);
   }
 }
