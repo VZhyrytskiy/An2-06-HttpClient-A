@@ -52,7 +52,7 @@ export class TaskPromiseService {
       .catch(this.handleError);
   }
 
-  deleteTask(task: TaskModel): Promise<TaskModel> {
+  deleteTask(task: TaskModel): Promise<unknown> {
     const url = `${this.tasksUrl}/${task.id}`;
     const request$ = this.http.delete(url);
 
