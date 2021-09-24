@@ -7,7 +7,7 @@ import {
   HttpParams
 } from '@angular/common/http';
 
-import { Observable, throwError, catchError, retry, share } from 'rxjs';
+import { Observable, throwError, catchError, retry, share, concatMap } from 'rxjs';
 
 import { UserModel } from './../models/user.model';
 import { UsersAPI } from './../users.config';
@@ -42,24 +42,18 @@ export class UserObservableService {
   updateUser(user: UserModel): Observable<UserModel> {
     const url = `${this.usersUrl}/${user.id}`;
     const body = JSON.stringify(user);
-    const options = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
 
     return this.http
-      .put<UserModel>(url, body, options)
+      .put<UserModel>(url, body)
       .pipe(catchError(this.handleError));
   }
 
   createUser(user: UserModel): Observable<UserModel> {
     const url = this.usersUrl;
     const body = JSON.stringify(user);
-    const options = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
 
     return this.http
-      .post<UserModel>(url, body, options)
+      .post<UserModel>(url, body)
       .pipe(catchError(this.handleError));
   }
 

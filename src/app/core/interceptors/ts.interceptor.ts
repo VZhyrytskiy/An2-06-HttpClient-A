@@ -5,12 +5,11 @@ import {
   HttpHandler,
   HttpRequest,
   HttpResponse,
-  HttpParams,
-  HttpEventType
+  HttpEventType,
+  HttpHeaders
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, filter, map } from 'rxjs';
 
 @Injectable()
 export class TsInterceptor implements HttpInterceptor {
@@ -22,11 +21,13 @@ export class TsInterceptor implements HttpInterceptor {
 
     // request interceptor
     let clonedRequest;
-    if (req.url.includes('users')) {
+    if (req.method === 'POST' || (req.method === 'PUT')) {
+      console.log('req.method:', req.method);
       clonedRequest = req.clone({
-        params: new HttpParams().set('ts_interceptor', Date.now().toString())
-        // clear the body
-        // body: null
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'user-token'
+        })
       });
       console.log(clonedRequest);
     } else {
