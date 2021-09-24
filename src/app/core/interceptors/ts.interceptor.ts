@@ -9,6 +9,8 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 
+import { interceptorTOKEN } from './../../users';
+
 import { Observable, filter, map } from 'rxjs';
 
 @Injectable()
@@ -20,6 +22,9 @@ export class TsInterceptor implements HttpInterceptor {
     console.log(`Request Interceptor:`);
 
     // request interceptor
+    const contextValue = req.context.get(interceptorTOKEN);
+    console.log('contextValue:', contextValue);
+
     let clonedRequest;
     if (req.method === 'POST' || (req.method === 'PUT')) {
       console.log('req.method:', req.method);
