@@ -42,11 +42,10 @@ export class TaskPromiseService {
 
   createTask(task: TaskModel): Promise<TaskModel> {
     const url = this.tasksUrl;
-    const body = JSON.stringify(task);
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    const request$ = this.http.post(url, body, options);
+    const request$ = this.http.post(url, task, options);
 
     return firstValueFrom(request$)
       .then(response => response as TaskModel)
