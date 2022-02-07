@@ -1,15 +1,13 @@
 import { Injectable, Inject } from '@angular/core';
-import {
-  HttpClient, HttpErrorResponse,
-  HttpContextToken, HttpContext
-} from '@angular/common/http';
-
+import { HttpClient, HttpContextToken, HttpContext } from '@angular/common/http';
 import { Observable, throwError, catchError, retry, share, concatMap } from 'rxjs';
-
-import { UserModel } from './../models/user.model';
+import type { UserModel } from './../models/user.model';
 import { UsersAPI } from './../users.config';
 
 export const interceptorTOKEN = new HttpContextToken(() => 'Some Default Value');
+
+import type { HttpErrorResponse } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'any'
@@ -32,7 +30,7 @@ export class UserObservableService {
     );
   }
 
-  getUser(id: number | string): Observable<UserModel> {
+  getUser(id: NonNullable<UserModel['id']> | string): Observable<UserModel> {
     const url = `${this.usersUrl}/${id}`;
 
     return this.http.get<UserModel>(url).pipe(
