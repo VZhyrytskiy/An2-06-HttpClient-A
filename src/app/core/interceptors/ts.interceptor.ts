@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
+import { HttpHeaders, HttpEventType } from '@angular/common/http';
+import type {
   HttpEvent,
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HttpResponse,
-  HttpEventType,
-  HttpHeaders
+  HttpResponse
 } from '@angular/common/http';
 
 import { interceptorTOKEN } from './../../users';
-
-import { Observable, filter, map } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 @Injectable()
 export class TsInterceptor implements HttpInterceptor {
