@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { Component  } from '@angular/core';
+import type { OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import type { UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
 
-// rxjs
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import type { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs';
 
+import { DialogService } from './../../../core';
+import type { CanComponentDeactivate } from './../../../core';
 import { UserModel } from './../../models/user.model';
-import { DialogService, CanComponentDeactivate } from './../../../core';
 import { UserObservableService } from './../../services';
 
 @Component({
