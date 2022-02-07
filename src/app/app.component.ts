@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
+import type { OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import type { RouterOutlet } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { Router, RouterOutlet, NavigationEnd, NavigationStart } from '@angular/router';
-
-// rxjs
-import { Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { Subscription, filter, map, switchMap } from 'rxjs';
 
 import { MessagesService, CustomPreloadingStrategyService } from './core';
 import { SpinnerService } from './widgets';
