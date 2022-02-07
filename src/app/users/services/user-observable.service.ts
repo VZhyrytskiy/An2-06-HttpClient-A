@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, catchError, retry, share } from 'rxjs';
+import { Observable, throwError, catchError, retry, share, concatMap } from 'rxjs';
 import { UsersAPI } from './../users.config';
 
 import type { HttpResponse, HttpErrorResponse } from '@angular/common/http';
