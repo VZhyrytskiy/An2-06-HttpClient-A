@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { TaskModel } from './../models/task.model';
+import type { TaskModel } from './../models/task.model';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class TaskPromiseService {
       .catch(this.handleError);
   }
 
-  getTask(id: number | string): Promise<TaskModel> {
+  getTask(id: NonNullable<TaskModel['id']> | string): Promise<TaskModel> {
     const url = `${this.tasksUrl}/${id}`;
 
     const request$ = this.http.get(url);
