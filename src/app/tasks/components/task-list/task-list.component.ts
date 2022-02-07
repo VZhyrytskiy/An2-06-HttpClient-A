@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TaskModel } from './../../models/task.model';
 import { TaskArrayService, TaskPromiseService } from './../../services';
+
+import type { OnInit } from '@angular/core';
+import type { TaskModel } from './../../models/task.model';
 
 @Component({
   templateUrl: './task-list.component.html',
