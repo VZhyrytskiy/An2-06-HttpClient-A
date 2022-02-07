@@ -19,7 +19,7 @@ export class TaskPromiseService {
       .catch(this.handleError);
   }
 
-  getTask(id: number | string): Promise<TaskModel> {
+  getTask(id: NonNullable<TaskModel['id']> | string): Promise<TaskModel> {
     const url = `${this.tasksUrl}/${id}`;
 
     const request$ = this.http.get(url);
