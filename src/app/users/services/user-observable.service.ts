@@ -23,7 +23,7 @@ export class UserObservableService {
     );
   }
 
-  getUser(id: number | string): Observable<UserModel> {
+  getUser(id: NonNullable<UserModel['id']> | string): Observable<UserModel> {
     const url = `${this.usersUrl}/${id}`;
 
     return this.http.get<UserModel>(url).pipe(
