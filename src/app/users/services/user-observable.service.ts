@@ -1,15 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-  HttpErrorResponse
-} from '@angular/common/http';
-
-import { Observable, throwError, catchError, retry, share } from 'rxjs';
-
-import { UserModel } from './../models/user.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError, catchError, retry, share, concatMap } from 'rxjs';
 import { UsersAPI } from './../users.config';
+
+import type { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import type { UserModel } from './../models/user.model';
 
 @Injectable({
   providedIn: 'any'
@@ -28,7 +23,7 @@ export class UserObservableService {
     );
   }
 
-  getUser(id: number | string): Observable<UserModel> {
+  getUser(id: NonNullable<UserModel['id']> | string): Observable<UserModel> {
     const url = `${this.usersUrl}/${id}`;
 
     return this.http.get<UserModel>(url).pipe(
@@ -40,25 +35,23 @@ export class UserObservableService {
 
   updateUser(user: UserModel): Observable<UserModel> {
     const url = `${this.usersUrl}/${user.id}`;
-    const body = JSON.stringify(user);
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
     return this.http
-      .put<UserModel>(url, body, options)
+      .put<UserModel>(url, user, options)
       .pipe(catchError(this.handleError));
   }
 
   createUser(user: UserModel): Observable<UserModel> {
     const url = this.usersUrl;
-    const body = JSON.stringify(user);
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
     return this.http
-      .post<UserModel>(url, body, options)
+      .post<UserModel>(url, user, options)
       .pipe(catchError(this.handleError));
   }
 
