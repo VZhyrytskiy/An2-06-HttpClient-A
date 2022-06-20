@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import type { MetaDefinition } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, type Routes } from '@angular/router';
 
 import { TaskListComponent, TaskFormComponent } from './components';
 
@@ -19,8 +19,8 @@ const routes: Routes = [
   {
     path: 'home',
     component: TaskListComponent,
+    title: 'Task Manager',
     data: {
-      title: 'Task Manager',
       meta: metaTags
     }
   },
