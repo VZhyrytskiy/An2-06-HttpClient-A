@@ -1,9 +1,5 @@
-import { Component } from '@angular/core';
-import type { OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import type { ParamMap } from '@angular/router';
-
-// rxjs
+import { Component, type OnInit } from '@angular/core';
+import { ActivatedRoute, Router, type ParamMap } from '@angular/router';
 import { map, switchMap } from 'rxjs';
 
 import { TaskModel } from './../../models/task.model';
@@ -20,7 +16,7 @@ export class TaskFormComponent implements OnInit {
     private taskArrayService: TaskArrayService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.task = new TaskModel();
@@ -34,10 +30,10 @@ export class TaskFormComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((params: ParamMap) =>
-             // notes about "!"
-             // params.get() returns string | null, but getTask takes string | number
-             // in this case taskID is a path param and can not be null
-             this.taskArrayService.getTask(params.get('taskID')!)
+          // notes about "!"
+          // params.get() returns string | null, but getTask takes string | number
+          // in this case taskID is a path param and can not be null
+          this.taskArrayService.getTask(params.get('taskID')!)
         ),
         // transform undefined => {}
         map(el => el ? el : {} as TaskModel)
