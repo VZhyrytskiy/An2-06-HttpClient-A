@@ -1,15 +1,11 @@
-import { Component  } from '@angular/core';
-import type { OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import type { UrlTree } from '@angular/router';
-
-import type { Observable } from 'rxjs';
-import { map } from 'rxjs';
+import { Component, type OnInit} from '@angular/core';
+import { ActivatedRoute, Router, type UrlTree, type Data } from '@angular/router';
+import { type Observable, map } from 'rxjs';
 
 import { DialogService } from './../../../core';
-import type { CanComponentDeactivate } from './../../../core';
 import { UserModel } from './../../models/user.model';
 import { UserArrayService } from './../../services/user-array.service';
+import type { CanComponentDeactivate } from './../../../core';
 
 @Component({
   templateUrl: './user-form.component.html',
@@ -19,17 +15,19 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   user!: UserModel;
   originalUser!: UserModel;
 
+  private onGoBackClick: boolean = false;
+
   constructor(
     private userArrayService: UserArrayService,
     private route: ActivatedRoute,
     private router: Router,
     private dialogService: DialogService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // data is an observable object
     // which contains custom and resolve data
-    this.route.data.pipe(map(data => data.user)).subscribe((user: UserModel) => {
+    this.route.data.pipe(map((data: Data) => data['user'])).subscribe((user: UserModel) => {
       this.user = { ...user };
       this.originalUser = { ...user };
     });
@@ -50,6 +48,7 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   onGoBack(): void {
+    this.onGoBackClick = true;
     this.router.navigate(['./../../'], { relativeTo: this.route });
   }
 
@@ -58,7 +57,10 @@ export class UserFormComponent implements OnInit, CanComponentDeactivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      const flags = (Object.keys(this.originalUser) as (keyof UserModel)[]).map(key => {
+
+    if (this.onGoBackClick) return true;
+
+    const flags = (Object.keys(this.originalUser) as (keyof UserModel)[]).map(key => {
       if (this.originalUser[key] === this.user[key]) {
         return true;
       }
