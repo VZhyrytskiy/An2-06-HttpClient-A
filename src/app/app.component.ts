@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
-import type { OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
-import type { RouterOutlet } from '@angular/router';
+import { Component, type OnInit, type OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, NavigationStart, type RouterOutlet, type Data, type ActivatedRoute, type Event } from '@angular/router';
+import { type Subscription, filter, map, switchMap } from 'rxjs';
 import { Title, Meta } from '@angular/platform-browser';
-import { Subscription, filter, map, switchMap } from 'rxjs';
 
 import { MessagesService, CustomPreloadingStrategyService } from './core';
 import { SpinnerService } from './widgets';
@@ -26,17 +24,17 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // console.log(
-    //   `Preloading Modules: `,
-    //   this.preloadingStrategy.preloadedModules
-    // );
+    console.log(
+      `Preloading Modules: `,
+      this.preloadingStrategy.preloadedModules
+    );
     // this.setPageTitles();
     this.setMessageServiceOnRefresh();
   }
 
   ngOnDestroy(): void {
-    this.sub.navigationStart.unsubscribe();
-    // this.sub.navigationEnd.unsubscribe();
+    this.sub['navigationStart'].unsubscribe();
+    // this.sub['navigationEnd'].unsubscribe();
   }
 
   onDisplayMessages(): void {
@@ -44,22 +42,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.messagesService.isDisplayed = true;
   }
 
-  /**
-   * @param $event - component instance
-   */
   onActivate($event: any, routerOutlet: RouterOutlet): void {
     console.log('Activated Component', $event, routerOutlet);
     // another way to set titles
-    this.titleService.setTitle(routerOutlet.activatedRouteData.title);
-    this.metaService.addTags(routerOutlet.activatedRouteData.meta);
+    // this.titleService.setTitle(routerOutlet.activatedRouteData['title']);
+    this.metaService.addTags(routerOutlet.activatedRouteData['meta']);
   }
 
   onDeactivate($event: any, routerOutlet: RouterOutlet): void {
     console.log('Deactivated Component', $event, routerOutlet);
   }
 
+  onRouterLinkActive($event: boolean): void {
+    console.log($event);
+  }
+
   private setPageTitles(): void {
-    this.sub.navigationEnd = this.router.events
+    this.sub['navigationEnd'] = this.router.events
       .pipe(
         // NavigationStart, NavigationEnd, NavigationCancel,
         // NavigationError, RoutesRecognized, ...
@@ -77,24 +76,23 @@ export class AppComponent implements OnInit, OnDestroy {
         // Doing this allows us to essentially dive into the children
         // property of the routes config
         // to fetch the corresponding page title(s)
-        map(route => {
+        map((route: ActivatedRoute) => {
           while (route.firstChild) {
             route = route.firstChild;
           }
           return route;
         }),
-        filter(route => route.outlet === 'primary'),
-        switchMap(route => route.data)
+        filter((route: ActivatedRoute) => route.outlet === 'primary'),
+        switchMap((route: ActivatedRoute) => route.data)
       )
-      .subscribe(data => this.titleService.setTitle(data.title));
+      .subscribe((data: Data) => this.titleService.setTitle(data['title']));
   }
 
   private setMessageServiceOnRefresh(): void {
-    this.sub.navigationStart = this.router.events
-      .pipe(filter(event => event instanceof NavigationStart))
-      .subscribe(event => {
+    this.sub['navigationStart'] = this.router.events
+      .pipe(filter((event: Event) => event instanceof NavigationStart))
+      .subscribe((event: Event) => {
         this.messagesService.isDisplayed = (event as NavigationStart).url.includes('messages:');
       });
-
   }
 }
