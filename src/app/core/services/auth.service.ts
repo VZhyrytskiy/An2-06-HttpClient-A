@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-import { Observable, of, delay, tap } from 'rxjs';
+import {  of, delay, tap, type Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
