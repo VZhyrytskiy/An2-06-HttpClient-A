@@ -27,7 +27,7 @@
                   <a routerLink="/login">Login</a>
                 </li>
 
-                <li routerLinkActive="active">
+                <li routerLinkActive="active" (isActiveChange)="onRouterLinkActive($event)">
                   <!--routerLink one-time binding-->
                   <a routerLink="/about">About</a>
                 </li>
